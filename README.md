@@ -34,4 +34,10 @@ Now, to see which objects the blue projectile (inside the red box) is colliding 
 </p>
 As shown in Figure 5, we iteratively explore the tree by checking all the boxes that collide with the projectile. During our exploration, when we find a collision with a leaf node (without any children), this indicates that a collision between the projectile and the character has happened at that member (hitbox).
 
+## Solution
+- This problem is solved through a Graphs as explained above each object is a graph and will be made up of different body parts for example:
+<p align="center">
+<img width="420" alt="Screen Shot 2022-02-21 at 4 15 10 PM" src="https://user-images.githubusercontent.com/94231603/154962503-e74e795a-1bfa-4fdd-a335-4024feb5bd26.png">
+</p>
+
 
