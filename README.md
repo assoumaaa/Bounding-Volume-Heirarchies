@@ -69,6 +69,7 @@ We do so by iterating down the tree starting at root until we reach a leaf. At e
 
   `int increaseInRightTreeSize = 
   AABB::unionArea(newNode->aabb branchNode->rightChild->aabb)-branchNode->rightChild->aabb.getArea();`
+  -
   `int increaseInLeftTreeSize = AABB::unionArea(newNode->aabb, branchNode->leftChild->aabb) - branchNode->leftChild->aabb.getArea();`
 
 And if increaseInRightTreeSize < increaseInLeftTreeSize, we will go to the right child. Otherwise, we will go to the left child.
