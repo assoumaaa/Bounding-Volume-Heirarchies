@@ -66,12 +66,12 @@ An important question arises at this point; how do we pick existingLeaf? Unlike 
 
 We do so by iterating down the tree starting at root until we reach a leaf. At each branch node, we will go in the direction of the child whose area would increase the least if newNode becomes one of its children. More precisely, given that we wish to add newNode to the tree, and given that we are at the branch node branchNode, we will calculate the following two values
 
-'''
-int increaseInRightTreeSize = AABB::unionArea(newNode->aabb,
-branchNode->rightChild->aabb) - branchNode->rightChild->aabb.getArea();
-int increaseInLeftTreeSize = AABB::unionArea(newNode->aabb,
-branchNode->leftChild->aabb) - branchNode->leftChild->aabb.getArea();
-'''
+
+  int increaseInRightTreeSize = AABB::unionArea(newNode->aabb,
+  branchNode->rightChild->aabb) - branchNode->rightChild->aabb.getArea();
+  int increaseInLeftTreeSize = AABB::unionArea(newNode->aabb,
+  branchNode->leftChild->aabb) - branchNode->leftChild->aabb.getArea();
+
 And if increaseInRightTreeSize < increaseInLeftTreeSize, we will go to the right child. Otherwise, we will go to the left child.
 <p align="center">
 <img width="510" alt="Screen Shot 2022-02-21 at 4 23 22 PM" src="https://user-images.githubusercontent.com/94231603/154963632-f3ffbe19-68e5-4e97-8603-783ca0a5d7f1.png">
