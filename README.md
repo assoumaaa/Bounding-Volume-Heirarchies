@@ -2,7 +2,7 @@
 
 
 ## Introduction
-Game development is a very challenging process involving many different problems. This includes everything from rendering graphics, carrying out game mechanics, responding to user input, and creating the AI. In this assignment, we will explore a very common problem in game development, and physics engines in general; the problem of collision detection. Let’s look at the following screenshot:
+Game development is a very challenging process involving many different problems. This includes everything from rendering graphics, carrying out game mechanics, responding to user input, and creating the AI. I will explore a very common problem in game development, and physics engines in general; the problem of collision detection. Let’s look at the following screenshot:
 
 <p align="center">
 <img width="415" alt="Screen Shot 2022-02-21 at 4 05 18 PM" src="https://user-images.githubusercontent.com/94231603/154960872-89504832-34e4-40c4-8921-aa69771bcc6f.png">
@@ -26,9 +26,12 @@ Each one of these objects (Ryu, Honda, and the hadouken) is an object. The chara
 <p align="center">
 <img width="488" alt="Screen Shot 2022-02-21 at 4 09 12 PM" src="https://user-images.githubusercontent.com/94231603/154961537-bcdd4f80-1074-4fce-b325-a2269b677ad2.png">
 </p>
+
 Now, to see which objects the blue projectile (inside the red box) is colliding with, we only need to check two other boxes (the boxes at the root of the two characters’ trees). When we do this check, we find that the projectile is colliding with the root of the tree of the character to the right only. Now, we begin searching for the exact collision point (if there is one) within the tree of that character. We do so by iteratively exploring the tree starting at the root. At each level, if we find that the projectile collides with a box, we will explore its children. If the box doesn’t have children, it means that it’s a leaf, and that it’s one of the object’s members.
 
 <p align="center">
 <img width="781" alt="Screen Shot 2022-02-21 at 4 10 20 PM" src="https://user-images.githubusercontent.com/94231603/154961697-0f7e2d7e-9b5b-4665-b13f-7e05890cfff5.png">
 </p>
 As shown in Figure 5, we iteratively explore the tree by checking all the boxes that collide with the projectile. During our exploration, when we find a collision with a leaf node (without any children), this indicates that a collision between the projectile and the character has happened at that member (hitbox).
+
+
