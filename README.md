@@ -35,9 +35,51 @@ Now, to see which objects the blue projectile (inside the red box) is colliding 
 As shown in Figure 5, we iteratively explore the tree by checking all the boxes that collide with the projectile. During our exploration, when we find a collision with a leaf node (without any children), this indicates that a collision between the projectile and the character has happened at that member (hitbox).
 
 ## Solution
-- This problem is solved through a Graphs as explained above each object is a graph and will be made up of different body parts for example:
+- This problem is solved through a Trees as explained above each object is a graph and will be made up of different body parts. My job first is to add those BVHMember in an addBVHMember(AABB objectArea,string name) function. However when adding a node to the tree we will have 3 possible cases:
+1) The Tree is empty
+2) There is exactly one node in the tree
+3) There is more than one node in the tree
+
+### Tree is empty
+If the tree is empty i will set the root of the tree to be the newly created node. Example shown below.
 <p align="center">
-<img width="420" alt="Screen Shot 2022-02-21 at 4 15 10 PM" src="https://user-images.githubusercontent.com/94231603/154962503-e74e795a-1bfa-4fdd-a335-4024feb5bd26.png">
+<img width="498" alt="Screen Shot 2022-02-21 at 4 20 11 PM" src="https://user-images.githubusercontent.com/94231603/154963170-56bd7a36-7c62-4179-b14f-32583496e1fd.png">
 </p>
+
+
+### There is exactly one node in the tree
+Let’s call the current node at the root oldRoot. I must create a new branch node (non-leaf), which you will set as the root of the tree. In addition, i will set the left child of the branch node as newNode and the right child as oldRoot. And, importantly, i will set the area of the branch node to be as big as both children. In other words, the area of the branch must cover its childrens areas. This is an important insight: anytime a node is added as a child of another node, the parent node as well as all of the parent’s ancestors must adjust their area to fit the new child node. Example shown below:
+<p align="center">
+<img width="525" alt="Screen Shot 2022-02-21 at 4 19 53 PM" src="https://user-images.githubusercontent.com/94231603/154963124-46d4f51c-4562-4a9f-88c4-a884d4378fb1.png">
+</p>
+
+
+### There is more than one node in the tree
+
+In this case, i must find a location for this node somewhere in the tree. Recall from the invariants mentioned earlier that, in our tree, member (hitbox) nodes cannot have children and branch nodes always have two children. So, if i wanted to add a new node to an existing tree, we cannot add it as a child of an existing branch node since all branch nodes already have two children, and we cannot make it a child of a leaf node since it will no longer be a leaf. So, what we must do, is:
+  1. Pick a leaf node in the tree, call it existingLeaf
+  2. Create a new branch node that will take its position
+  3. Set newNode as the left child of the new branch node and existingLeaf as its
+  right child.
+Notice that this operation will maintain our tree invariants. The leaf nodes newNode and existingLeaf are still leaves (have no children,) and the new branch node has exactly two children.
+An important question arises at this point; how do we pick existingLeaf? Unlike binary search trees, there is no ordering property between sibling nodes. The only condition we must maintain is that this node must be a leaf node. So then how should we proceed? Where do we place the node? Turns out there are many different algorithms for finding an appropriate location for new nodes in the tree, and each comes with its own benefits. However, what i will do is place new nodes in locations that will minimize the increase in other nodes’ areas.
+
+We do so by iterating down the tree starting at root until we reach a leaf. At each branch node, we will go in the direction of the child whose area would increase the least if newNode becomes one of its children. More precisely, given that we wish to add newNode to the tree, and given that we are at the branch node branchNode, we will calculate the following two values
+
+'''
+int increaseInRightTreeSize = AABB::unionArea(newNode->aabb,
+branchNode->rightChild->aabb) - branchNode->rightChild->aabb.getArea();
+int increaseInLeftTreeSize = AABB::unionArea(newNode->aabb,
+branchNode->leftChild->aabb) - branchNode->leftChild->aabb.getArea();
+'''
+And if increaseInRightTreeSize < increaseInLeftTreeSize, we will go to the right child. Otherwise, we will go to the left child.
+<p align="center">
+<img width="510" alt="Screen Shot 2022-02-21 at 4 23 22 PM" src="https://user-images.githubusercontent.com/94231603/154963632-f3ffbe19-68e5-4e97-8603-783ca0a5d7f1.png">
+</p>
+
+
+
+
+
 
 
