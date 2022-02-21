@@ -106,7 +106,7 @@ The main program will read two text files, “agent.txt” and “actions.txt”
 - Print out the tree:
   p
   
-### Sample Run
+### Sample Run NOTE:(THE SAMPLE UPLOADED IS DIFFERENT THUS DIFFERENT OUTPUT )
 
 agent.txt
 left-leg 0 0 1 3
