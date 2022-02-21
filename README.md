@@ -78,7 +78,65 @@ And if increaseInRightTreeSize < increaseInLeftTreeSize, we will go to the right
 
 
 
+- removeBVHMember(string name)
+When we remove a node from the tree, we must make sure to maintain the invariants of the data structure: leaves have no children, branches have exactly two children, members are leaves and branches aren’t. When we want to remove a member node, we will leave its parent branch node with only a single child, which will break the invariant. For this reason, when we remove a node, call it toRemove, we will replace the branch node that is the parent of toRemove by the sibling of toRemove. This way, the grand parent of toRemove will have two children and the leaves will have no children.
+
+- moveBVHMember(string name, AABB newLocation)
+This function will change the location and dimension of a member node. When this function is called, there are two possibilities:
+  1. The new location is covered by the parent of the node, in which case you will only change the location (AABB) of the node itself (not its parents).
+  2. The new location of the node is not covered by its parent. In this case, you will remove the node and reinsert it in the tree.
+
+- getCollidingObjects(AABB location)
+This function takes an AABB object and will store the names of all the members that collide with this object. You must start a search from the root and go to its children. At each node, if the node’s AABB overlaps with location (you can check this using the overlap() function in the AABB struct), then:
+  1. If it’s a leaf, you will add it to the vector of names of collided members
+  2. If it’s a branch, you will check its children.
 
 
+- Main program
+The main program will read two text files, “agent.txt” and “actions.txt”. “agent.txt” will contain the member data of the agent, and the “actions.txt” file contains the actions that must be done on the BVH. The main program will use the functions that you will implement to build the BVH that satisfies “agent.txt”. Afterwards, “actions.txt” will be read and its actions will be performed on the BVH that you created. The actions that will be performed are the following:
 
+
+### SYNTAX
+- Collision detection with single AABB:
+  c minX minY maxX maxY
+
+- Moving a member inside the BVH to a new location:
+  m member_name minX minY maxX maxY
+
+- Print out the tree:
+  p
+  
+### Sample Run
+
+agent.txt
+left-leg 0 0 1 3
+right-leg 2 0 3 3
+torso 0 3 3 7
+head 1 7 3 8
+
+actions.txt
+c 1 2 2 3
+c 10 10 11 11 c0318
+m left-leg 1 0 2 3 c0318
+p
+  
+
+We will get the following output (bolded text is user input):
+Projectile (1, 2), (2, 3)
+Collides with: left-leg, right-leg, torso Projectile (10, 10), (11, 11)
+Collides with:
+Projectile (0, 3), (1, 8)
+Collides with: head, left-leg, torso
+Moved the left-leg to the location (1, 0), (2, 3) Projectile (0, 3), (1, 8)
+Collides with: head, left-leg, torso
+
+
+Current tree:
++ branch || min = (0, 0), max = (3, 8), Area = 24
+  - R - leaf: left-leg || min = (1, 0), max = (2, 3), Area = 3 
+  + branch || min = (0, 0), max = (3, 8), Area = 24
+  -  R - leaf: right-leg || min = (2, 0), max = (3, 3), Area = 3 
+    + branch || min = (0, 3), max = (3, 8), Area = 15
+    - R - leaf: torso || min = (0, 3), max = (3, 7), Area = 12
+    - L - leaf: head || min = (1, 7), max = (3, 8), Area = 2
 
