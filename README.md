@@ -1,4 +1,4 @@
-# Bounding-Volume-Heirarchies
+# Collision System in Video Games
 
 
 ## Introduction
